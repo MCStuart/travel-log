@@ -24,7 +24,11 @@ TravelLog.prototype.findDestination = function(id) {
       }
     }
   };
-  return false;
+  return "https://en.wikipedia.org/wiki/" + this.location; // returns wikipedia link for a specific searched location if no matching location is found
+}
+// return output of travel destination during a specific time of timeOfYear
+Destination.prototype.tripDetail = function() {
+  return "I traveled to " + this.destination + " during " + this.timeOfYear ". I had a great time!"
 }
 
 // Back-end for our travel Log
