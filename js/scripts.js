@@ -1,6 +1,3 @@
-// Test destinations
-var destination = new Destination("China", ['Great wall of China', "Emporor's Palace"], "Monsoon Season", "The air-quality sucks", "img/Forbidden-city.jpg");
-
 //Back-end for individual destinations
 function Destination(location, landmarks, timeOfYear, notes, img) {
   this.location = location;
@@ -17,20 +14,42 @@ TravelLog.prototype.addDestinations = function(destination) {
 }
 //add order of the destination that was visited
 TravelLog.prototype.addIdToDestination = function() {
-  this.orderVisited++;
-  return this.orderVisited;
+  this.id++;
+  return this.id;
 }
 // Attached Event Listeners to listed destinations
-function attachDestinationListeners() {
-  $("ul.placeList").on("click", "li", function() {
-    console.log("The id of this <li> is " + this.id + ".");
+function attachDestinationListeners(travelLog) {
+  $("#places").on("click", "p", function() {
+    console.log("The id of this <p> is " + this.id + ".");
+    showDestination(this.id);
   });
 };
+// Search function for destinations by Id
+TravelLog.prototype.findDestinationById = function(id) {
+  for (var i=0; i< this.destinations.length; i++) {
+    if (this.destinations[i]) {
+      if (this.destinations[i].id == id) {
+        return this.destinations[i];
+      }
+    }
+  };
+  return false;
+}
+// shows the destination's Id
+function showDestination(id) {
+  var destination = TravelLog.findDestinationById(id);
+  $("#places").show();
+  $(".location").html(destination.location);
+  $(".landmarks").html(destination.landmarks);
+  $(".timeOfYear").html(destination.timeOfYear);
+  $(".notes").html(destination.notes);
+}
+
 
 // Back-end for our travel Log
 function TravelLog() {
   this.destinations = [];
-  this.orderVisited = 0;
+  this.id = 0;
 };
 
 // User Interface Logic
@@ -46,6 +65,7 @@ $(document).ready(function() {
     var image = $("#images").val();
     var destination = new Destination(location, landmarks, timeOfYear, notes, image);
     travelLog.addDestinations(destination);
+
     console.log(travelLog);
   })
 });
