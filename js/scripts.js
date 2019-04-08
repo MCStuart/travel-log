@@ -20,21 +20,12 @@ TravelLog.prototype.addIdToDestination = function() {
   this.orderVisited++;
   return this.orderVisited;
 }
-// Will search through destinations by assigned Id and return any matched value
-TravelLog.prototype.findDestination = function(id) {
-  for (var i = 0; i < this.destinations.length; i++) {
-    if (this.destinations[i]) {
-      if (this.destinations[i].id === id) {
-        return this.destinations[i];
-      }
-    }
-  };
-  return "https://en.wikipedia.org/wiki/" + this.location; // returns wikipedia link for a specific searched location if no matching location is found
-}
-// return output of travel destination during a specific time of timeOfYear
-// Destination.prototype.tripDetail = function() {
-//   return ("I traveled to " + this.destination + " during " + this.timeOfYear ". I had a great time!")
-// }
+// Attached Event Listeners to listed destinations
+function attachDestinationListeners() {
+  $("ul.placeList").on("click", "li", function() {
+    console.log("The id of this <li> is " + this.id + ".");
+  });
+};
 
 // Back-end for our travel Log
 function TravelLog() {
@@ -44,13 +35,17 @@ function TravelLog() {
 
 // User Interface Logic
 $(document).ready(function() {
+  attachDestinationListeners();
   var travelLog = new TravelLog();
   $("form").submit(function(event)  {
     event.preventDefault();
-    var destination = new Destination($("#location").val(),$("#landmarks").val(),$("#timeOfYear").val(),$("#notes").val(),$("#image").val());
+    var location = $("#location").val();
+    var landmarks = $("#landmarks").val().split(", ");
+    var timeOfYear = $("timeOfYear").val();
+    var notes = $("#notes").val();
+    var image = $("#images").val();
+    var destination = new Destination(location, landmarks, timeOfYear, notes, image);
     travelLog.addDestinations(destination);
     console.log(travelLog);
-
   })
-
 });
